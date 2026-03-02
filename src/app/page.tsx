@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import SkullMedallion from '@/components/SkullMedallion'
 import CornerOrnament from '@/components/CornerOrnament'
@@ -42,8 +43,13 @@ const ruleVariant = {
 
 // ─── Page ─────────────────────────────────────────────────────────────────
 
+const METHODS = ['Heart Attack', 'Suicide', 'Accident'] as const
+type Method = typeof METHODS[number]
+
 export default function DeathNotePage() {
   const titleChars = 'DEATH\u00A0NOTE'.split('')
+  const [name, setName] = useState('')
+  const [method, setMethod] = useState<Method | null>(null)
 
   return (
     <motion.main
@@ -96,7 +102,7 @@ export default function DeathNotePage() {
 
             {/* "How to use it" */}
             <motion.p
-              className="font-uncial text-white mt-1"
+              className="font-special text-white mt-1"
               style={{ fontSize: 'clamp(1.1rem, 3vw, 1.45rem)' }}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -115,6 +121,46 @@ export default function DeathNotePage() {
               I
             </motion.p>
           </header>
+
+          {/* ── Entry form ── */}
+          <motion.div
+            className="mb-8 flex flex-col gap-4"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.6 }}
+          >
+            {/* Name field */}
+            <div className="flex items-baseline gap-3">
+              <span className="font-special italic text-white text-base flex-shrink-0">Name:</span>
+              <div className="flex-1 border-b border-white">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-transparent text-white font-special italic text-base outline-none pb-0.5 placeholder:text-white/30"
+                  placeholder="___"
+                />
+              </div>
+            </div>
+
+            {/* Method checkboxes */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <span className="font-special italic text-white text-base flex-shrink-0">Method:</span>
+              {METHODS.map((m) => (
+                <label key={m} className="flex items-center gap-2 cursor-pointer select-none">
+                  <button
+                    type="button"
+                    onClick={() => setMethod(method === m ? null : m)}
+                    className="w-4 h-4 border border-white flex items-center justify-center flex-shrink-0 text-white text-xs leading-none"
+                    aria-pressed={method === m}
+                  >
+                    {method === m ? '✕' : ''}
+                  </button>
+                  <span className="font-special italic text-white text-base">{m}</span>
+                </label>
+              ))}
+            </div>
+          </motion.div>
 
           {/* ── Rules list ── */}
           <motion.ul

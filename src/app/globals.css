@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: #000;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+ruby {
+  ruby-align: center;
+}
+
+ruby rt {
+  font-size: 0.52em;
+  font-family: var(--font-noto), sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0;
+}

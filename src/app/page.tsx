@@ -171,7 +171,7 @@ export default function DeathNotePage() {
           >
             {rules.map((rule) => (
               <motion.li key={rule.id} variants={ruleVariant}>
-                <RuleItem english={rule.english} japanese={rule.japanese} />
+                <RuleItem english={rule.english} chinese={rule.chinese} />
               </motion.li>
             ))}
           </motion.ul>

@@ -1,37 +1,8 @@
-import type { Furigana, JapaneseText } from '@/data/rules'
+import type { Rule } from '@/data/rules'
 
-interface RuleItemProps {
-  english: string
-  japanese: JapaneseText
-}
+type RuleItemProps = Pick<Rule, 'english' | 'chinese'>
 
-function RubyText({ text, furigana }: { text: string; furigana: Furigana[] }) {
-  if (!furigana.length) return <span>{text}</span>
-
-  const parts: React.ReactNode[] = []
-  let remaining = text
-
-  furigana.forEach(({ base, reading }, i) => {
-    const idx = remaining.indexOf(base)
-    if (idx === -1) return
-    if (idx > 0) {
-      parts.push(<span key={`t${i}`}>{remaining.slice(0, idx)}</span>)
-    }
-    parts.push(
-      <ruby key={`r${i}`}>
-        {base}
-        <rt>{reading}</rt>
-      </ruby>
-    )
-    remaining = remaining.slice(idx + base.length)
-  })
-
-  if (remaining) parts.push(<span key="end">{remaining}</span>)
-
-  return <>{parts}</>
-}
-
-export default function RuleItem({ english, japanese }: RuleItemProps) {
+export default function RuleItem({ english, chinese }: RuleItemProps) {
   return (
     <div className="flex flex-col gap-1.5">
       {/* English rule */}
@@ -50,12 +21,12 @@ export default function RuleItem({ english, japanese }: RuleItemProps) {
         </p>
       </div>
 
-      {/* Japanese translation with furigana */}
+      {/* Chinese translation */}
       <p
         className="font-noto text-white leading-[1.75] pl-5"
-        style={{ fontSize: '0.62rem' }}
+        style={{ fontSize: '0.75rem' }}
       >
-        <RubyText text={japanese.text} furigana={japanese.furigana} />
+        {chinese}
       </p>
     </div>
   )

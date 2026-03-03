@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Pirata_One, Special_Elite, Noto_Sans_JP, Uncial_Antiqua } from 'next/font/google'
+import { Pirata_One, Special_Elite, Noto_Sans_SC, Uncial_Antiqua } from 'next/font/google'
 import './globals.css'
 
 const pirataOne = Pirata_One({
@@ -16,7 +16,7 @@ const specialElite = Special_Elite({
   display: 'swap',
 })
 
-const notoSansJP = Noto_Sans_JP({
+const notoSansSC = Noto_Sans_SC({
   weight: ['400'],
   subsets: ['latin'],
   variable: '--font-noto',
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
+    <html lang="zh">
       <body
-        className={`${pirataOne.variable} ${specialElite.variable} ${notoSansJP.variable} ${uncialAntiqua.variable} bg-black`}
+        className={`${pirataOne.variable} ${specialElite.variable} ${notoSansSC.variable} ${uncialAntiqua.variable} bg-black`}
       >
         {children}
       </body>

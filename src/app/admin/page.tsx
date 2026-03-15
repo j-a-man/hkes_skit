@@ -90,7 +90,7 @@ function Dashboard({ secret, onLogout }: { secret: string; onLogout: () => void 
       const res = await fetch('/api/admin/votes', {
         headers: { Authorization: `Bearer ${secret}` },
       })
-      if (res.status === 401) { onLogout(); return }
+      if (res.status === 401) { setError('Incorrect password or ADMIN_SECRET not set in Vercel env vars.'); setLoading(false); return }
       if (!res.ok) throw new Error('Failed to load')
       setData(await res.json())
     } catch {

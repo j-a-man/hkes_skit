@@ -15,7 +15,7 @@ const SUSPECTS = [
 ] as const
 
 type Suspect = typeof SUSPECTS[number]['name']
-type Status = 'idle' | 'submitting' | 'success' | 'error'
+type Status = 'idle' | 'submitting' | 'success' | 'duplicate' | 'error'
 
 // ─── Animation variants ────────────────────────────────────────────────────────
 
@@ -78,6 +78,44 @@ function SuspectCard({
         <span className="font-special italic text-white text-sm">{suspect.name}</span>
       </div>
     </button>
+  )
+}
+
+// ─── Already voted screen ─────────────────────────────────────────────────────
+
+function AlreadyVotedScreen() {
+  return (
+    <motion.main
+      className="min-h-screen bg-black flex items-center justify-center py-24 px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.0 }}
+    >
+      <div className="relative w-full max-w-[680px]">
+        <SkullMedallion />
+        <motion.div
+          className="border-2 border-white relative pt-16 pb-10 px-10 mt-14 text-center"
+          style={{ outline: '1px solid white', outlineOffset: '-10px' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.9 }}
+        >
+          <CornerOrnament position="top-left" />
+          <CornerOrnament position="top-right" />
+          <CornerOrnament position="bottom-right" />
+          <CornerOrnament position="bottom-left" />
+
+          <p className="font-pirata text-white text-4xl mb-4 tracking-wide">
+            Already voted.
+          </p>
+          <p className="font-special italic text-white/70 text-sm leading-relaxed">
+            This email has already been used to submit a vote.
+            <br />
+            Only one vote is allowed per person.
+          </p>
+        </motion.div>
+      </div>
+    </motion.main>
   )
 }
 
@@ -146,6 +184,7 @@ export default function GuessTheMurdererPage() {
         body: JSON.stringify({ email, fullName, suspect }),
       })
       const data = await res.json()
+      if (res.status === 409) { setStatus('duplicate'); return }
       if (!res.ok) throw new Error(data.error ?? 'Submission failed')
       setStatus('success')
     } catch (err) {
@@ -154,6 +193,7 @@ export default function GuessTheMurdererPage() {
     }
   }
 
+  if (status === 'duplicate') return <AlreadyVotedScreen />
   if (status === 'success') return <SuccessScreen suspect={suspect!} />
 
   return (

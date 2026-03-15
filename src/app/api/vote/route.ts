@@ -31,13 +31,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true }, { status: 200 })
   } catch (err: unknown) {
     // Postgres unique violation = duplicate email
-    if (
-      err instanceof Error &&
-      'code' in (err as NodeJS.ErrnoException) &&
-      (err as NodeJS.ErrnoException).code === '23505'
-    ) {
+    // Neon driver attaches `code` directly on the error object
+    const pgCode = (err as Record<string, unknown>)?.code
+    if (pgCode === '23505' || String(err).includes('23505')) {
       return NextResponse.json(
-        { error: 'You have already submitted a vote with this email.' },
+        { error: 'duplicate' },
         { status: 409 }
       )
     }

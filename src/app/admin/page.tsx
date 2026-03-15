@@ -125,6 +125,23 @@ function Dashboard({ secret, onLogout }: { secret: string; onLogout: () => void 
     }
   }
 
+  async function clearSubmissions() {
+    if (!confirm('Are you sure you want to delete ALL submissions? This cannot be undone.')) return
+    try {
+      const res = await fetch('/api/admin/clear', {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${secret}` },
+      })
+      if (!res.ok) throw new Error('Failed to clear')
+      setData(null)
+      setWinner(null)
+      setWinnerError('')
+      await fetchVotes()
+    } catch {
+      setError('Failed to clear submissions.')
+    }
+  }
+
   function exportCSV() {
     const url = `/api/admin/export`
     // Fetch with auth then trigger download
@@ -145,6 +162,12 @@ function Dashboard({ secret, onLogout }: { secret: string; onLogout: () => void 
       <div className="border-b border-zinc-800 px-6 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold tracking-tight">Guess the Murderer — Admin</h1>
         <div className="flex gap-3">
+          <button
+            onClick={clearSubmissions}
+            className="text-sm text-red-500 hover:text-red-400 transition-colors"
+          >
+            Clear all
+          </button>
           <button
             onClick={fetchVotes}
             className="text-sm text-zinc-400 hover:text-white transition-colors"

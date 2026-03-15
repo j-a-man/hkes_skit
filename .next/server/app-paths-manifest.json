@@ -1,5 +1,11 @@
 {
-  "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/api/admin/clear/route": "app/api/admin/clear/route.js",
+  "/api/admin/debug/route": "app/api/admin/debug/route.js",
+  "/api/admin/winner/route": "app/api/admin/winner/route.js",
   "/api/admin/votes/route": "app/api/admin/votes/route.js",
-  "/admin/page": "app/admin/page.js"
+  "/api/vote/route": "app/api/vote/route.js",
+  "/page": "app/page.js",
+  "/api/admin/export/route": "app/api/admin/export/route.js"
 }

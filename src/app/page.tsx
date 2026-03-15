@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import SkullMedallion from '@/components/SkullMedallion'
 import CornerOrnament from '@/components/CornerOrnament'
 
@@ -53,11 +54,12 @@ function SuspectCard({
       {/* Photo */}
       <div className="w-full aspect-square relative overflow-hidden bg-white/5 flex items-center justify-center">
         {!imgError ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={suspect.image}
             alt={suspect.name}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 640px) 40vw, 160px"
+            className="object-cover"
             onError={() => setImgError(true)}
           />
         ) : (
